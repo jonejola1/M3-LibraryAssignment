@@ -46,15 +46,15 @@
                 new Book("Les Miserables", "Victor Hugo", 13),
                 new Book("The Count of Monte Cristo", "Alexandre Dumas", 8),
             };
-            List<Lender> lendedBooks = new List<Lender>{ new Lender("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today)};
+            List<Borrower> lendedBooks = new List<Borrower>{ new Borrower("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today)};
 
             var library = new Library(books, lendedBooks);
             library.ShowRecentBooks();
             library.AddBook("Harry Potter", "J.K.Rowling", 5);
             library.ShowRecentBooks();
-            library.ShowLendedBooks();
+            library.ShowAllLendedBooks();
             library.LendBook("Per");
-            library.ShowLendedBooks();
+            library.ShowAllLendedBooks();
 
             library.CheckExpiryDateForLenders();
 

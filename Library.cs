@@ -1,42 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace M3_LibraryAssignment
+﻿namespace M3_LibraryAssignment
 {
     internal class Library
     {
         private List<Book> _booksInInventory;
 
-        private List<Lender> _lendedBooks;
+        private List<Borrower> _borrowedBooks;
 
-        public Library(List<Book> aBooks, List<Lender> aLendedBooks)
+        public Library(List<Book> aBooks, List<Borrower> aBorrowedBooks)
         {
             _booksInInventory = aBooks;
-            _lendedBooks = aLendedBooks;
+            _borrowedBooks = aBorrowedBooks;
         }
 
-        public void ShowLendedBooks()
+        public void AddBook(string nameOfBook, string authorOfBook, int quantityOfBook)
         {
-            foreach (var book in _lendedBooks)
+            if (NoDuplicate(nameOfBook))
             {
-                var personName = book.BorrowerName;
-                var name = book.BorrowedBook.Name;
-                var author = book.BorrowedBook.Author;
-                Console.WriteLine($"{name} by {author} is lended by {personName}");
-                
+                var newBookToAdd = new Book(nameOfBook, authorOfBook, quantityOfBook);
+                _booksInInventory.Add(newBookToAdd);
+                Console.WriteLine($"Added the book {nameOfBook} by {authorOfBook}\n");
             }
-        }
-        public void AddBook(string aName, string aAuthor, int aQuantity)
-        {
-            var newBook = new Book(aName, aAuthor, aQuantity);
-            _booksInInventory.Add(newBook);
-            Console.WriteLine($"Added the book {aName} by {aAuthor}\n");
+            
         }
 
-        public void ShowAll()
+        private bool NoDuplicate(string nameOfbook)
+        {
+            foreach (var book in _booksInInventory)
+            {
+                if (book.Name == nameOfbook) return true;
+            }
+
+            return false;
+        }
+
+        private void ShowAll()
         {
             var index = 1;
             foreach (var book in _booksInInventory)
@@ -55,34 +52,64 @@ namespace M3_LibraryAssignment
                 Math.Min(5, _booksInInventory.Count));
             foreach (var book in recentBooks)
             {
-                Console.WriteLine($"{book.Name} by {book.Author}");
+                var name = book.Name;
+                var author = book.Author;
+                Console.WriteLine($"{name} by {author}");
             }
         }
 
-        public void LendBook(string aFirstName)
+        public void LendBook(string aBorrowerName)
         {
             Console.WriteLine("\nHvilken bok vil du låne?");
             ShowAll();
-            var Book = Console.ReadLine();
-            var BookIndex = _booksInInventory[Convert.ToInt32(Book) -1];
-            BookIndex.DecreaseQuantity();
-            var Lender = new Lender(aFirstName, BookIndex, DateTime.Today);
-            _lendedBooks.Add(Lender);
-            DetailedLendInfo(BookIndex, Lender);
+
+
+            int selectedBookIndex = SelectBook();
+
+
+            var selectedBook = _booksInInventory[selectedBookIndex - 1];
+            if (selectedBook.Quantity == 0 ) return;
+            var lender = new Borrower(aBorrowerName, selectedBook, DateTime.Today);
+            _borrowedBooks.Add(lender);
+            
+            selectedBook.DecreaseQuantity();
+            lender.DetailedLendInfo();
         }
 
-        private void DetailedLendInfo(Book aBook, Lender aLender)
+        private int SelectBook()
         {
-            Console.WriteLine($"Du låner nå {aBook.Name} by {aBook.Author}. Lånt {aLender.DateBorrowed.ToShortDateString()} av {aLender.BorrowerName}, Utløps dato er {aLender.DueDate.ToShortDateString()}.\n");
+            int selectedBookIndex;
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out selectedBookIndex))
+                {
+                    if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
+                    {
+                       return selectedBookIndex;
+                    }
+                }
+            }
+        }
+
+        public void ShowAllLendedBooks()
+        {
+            foreach (var borrower in _borrowedBooks)
+            {
+                var borrowerName = borrower.BorrowerName;
+                var nameOfBook = borrower.BorrowedBook.Name;
+                var authorOfBook = borrower.BorrowedBook.Author;
+                Console.WriteLine($"{nameOfBook} by {authorOfBook} is borrowed by {borrowerName}");
+            }
         }
 
         public void CheckExpiryDateForLenders()
         {
-            foreach (var lender in _lendedBooks)
+            foreach (var borrower in _borrowedBooks)
             {
-                if (lender.IsExpired())
+                if (borrower.IsExpired())
                 {
-                    Console.WriteLine($"{lender.BorrowerName} har ikke levert boken på fristen og et gebyr vil bli sent!");
+                    Console.WriteLine($"{borrower.BorrowerName} har ikke levert boken på fristen og et gebyr vil bli sent!");
                 }
             }
         }

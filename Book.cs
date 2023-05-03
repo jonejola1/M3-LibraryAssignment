@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace M3_LibraryAssignment
+﻿namespace M3_LibraryAssignment
 {
     internal class Book
     {
@@ -12,16 +6,16 @@ namespace M3_LibraryAssignment
         public string Author { get; private set; }
         public int Quantity { get; private set; }
 
-        public Book(string aName, string aAuthor, int aQuantity)
+        public Book(string name, string author, int quantity)
         {
-            Name = aName;
-            Author = aAuthor;
-            Quantity = aQuantity;
+            Name = name;
+            Author = author;
+            Quantity = quantity;
         }
 
         public void DecreaseQuantity()
         {
-            this.Quantity--;
+            Quantity--;
         }
     }
 }
