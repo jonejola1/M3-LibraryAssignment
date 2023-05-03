@@ -49,6 +49,16 @@ namespace M3_LibraryAssignment
             }
         }
 
+        public void ShowRecentBooks()
+        {
+            var recentBooks = _booksInInventory.GetRange(Math.Max(0, _booksInInventory.Count - 5),
+                Math.Min(5, _booksInInventory.Count));
+            foreach (var book in recentBooks)
+            {
+                Console.WriteLine($"{book.Name} by {book.Author}");
+            }
+        }
+
         public void LendBook(string aFirstName)
         {
             Console.WriteLine("\nHvilken bok vil du låne?");
@@ -58,19 +68,23 @@ namespace M3_LibraryAssignment
             BookIndex.DecreaseQuantity();
             var Lender = new Lender(aFirstName, BookIndex, DateTime.Today);
             _lendedBooks.Add(Lender);
-            Console.WriteLine($"Du låner nå {BookIndex.Name} by {BookIndex.Author}. Lånt {Lender.DateBorrowed.ToShortDateString()} av {Lender.BorrowerName}, Utløps dato er {Lender.DueDate.ToShortDateString()}");
+            DetailedLendInfo(BookIndex, Lender);
         }
 
-        public void ShowRecentBooks()
+        private void DetailedLendInfo(Book aBook, Lender aLender)
         {
-            var recentBooks = _booksInInventory.GetRange(Math.Max(0, _booksInInventory.Count - 5),
-                Math.Min(5, _booksInInventory.Count));
-            foreach (var book in recentBooks)
+            Console.WriteLine($"Du låner nå {aBook.Name} by {aBook.Author}. Lånt {aLender.DateBorrowed.ToShortDateString()} av {aLender.BorrowerName}, Utløps dato er {aLender.DueDate.ToShortDateString()}.\n");
+        }
+
+        public void CheckExpiryDateForLenders()
+        {
+            foreach (var lender in _lendedBooks)
             {
-                Console.WriteLine($"{book.Name} by {book.Author}");
+                if (lender.IsExpired())
+                {
+                    Console.WriteLine($"{lender.BorrowerName} har ikke levert boken på fristen og et gebyr vil bli sent!");
+                }
             }
-            
-            
         }
     }
 }

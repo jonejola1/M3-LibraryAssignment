@@ -19,5 +19,10 @@
         {
             DueDate = DateBorrowed.AddDays(14);
         }
+
+        public bool IsExpired()
+        {
+            return DateTime.Now > DueDate;
+        }
     }
 }

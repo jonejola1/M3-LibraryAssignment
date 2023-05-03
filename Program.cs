@@ -56,6 +56,7 @@
             library.LendBook("Per");
             library.ShowLendedBooks();
 
+            library.CheckExpiryDateForLenders();
 
 
             /*
