@@ -64,7 +64,7 @@
             ShowAll();
 
 
-            int selectedBookIndex = SelectBook();
+            int selectedBookIndex = SelectBookToLend();
 
 
             var selectedBook = _booksInInventory[selectedBookIndex - 1];
@@ -76,11 +76,11 @@
             lender.DetailedLendInfo();
         }
 
-        private int SelectBook()
+        private int SelectBookToLend()
         {
-            int selectedBookIndex;
             while (true)
             {
+                int selectedBookIndex;
                 var input = Console.ReadLine();
                 if (int.TryParse(input, out selectedBookIndex))
                 {
@@ -115,7 +115,7 @@
                         returnedBook.IncreaseQuantity();
                         _borrowedBooks.Remove(borrower);
                         Console.WriteLine($"{returnedBook.Name} by {returnedBook.Author} was returned by {borrowerName}, at {DateTime.Now}\n");
-                        return;
+                        break;
                     }
                     Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
                 }
