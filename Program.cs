@@ -46,18 +46,35 @@
                 new Book("Les Miserables", "Victor Hugo", 13),
                 new Book("The Count of Monte Cristo", "Alexandre Dumas", 8),
             };
-            List<Borrower> lendedBooks = new List<Borrower>{ new Borrower("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today)};
+            List<Borrower> borrowedBooks = new List<Borrower>
+            {
+                new Borrower("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today),
+                new Borrower("John", books[3], DateTime.Today.AddDays(-7)),
+                new Borrower("Sarah", books[5], DateTime.Today.AddDays(-14)),
+                new Borrower("Michael", books[11], DateTime.Today.AddDays(-10)),
+                new Borrower("Emily", books[21], DateTime.Today.AddDays(-20)),
+                new Borrower("David", books[28], DateTime.Today.AddDays(-4)),
+                new Borrower("Jessica", books[31], DateTime.Today.AddDays(-8)),
+                new Borrower("James", books[35], DateTime.Today.AddDays(-12)),
+                new Borrower("Rachel", books[29], DateTime.Today.AddDays(-16)),
+                new Borrower("William", books[22], DateTime.Today.AddDays(-6)),
+                new Borrower("Amanda", books[34], DateTime.Today.AddDays(-18))
+            };
 
-            var library = new Library(books, lendedBooks);
+            var library = new Library(books, borrowedBooks);
             library.ShowRecentBooks();
             library.AddBook("Harry Potter", "J.K.Rowling", 5);
             library.ShowRecentBooks();
             library.ShowAllLendedBooks();
             library.LendBook("Per");
+            library.ShowAll();
             library.ShowAllLendedBooks();
 
             library.CheckExpiryDateForLenders();
 
+            library.ReturnBorrowedBook("David", "The Time Traveler's Wife");
+
+            library.ShowAllLendedBooks();
 
             /*
             Terjes anbefaling:

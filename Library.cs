@@ -33,7 +33,7 @@
             return false;
         }
 
-        private void ShowAll()
+        public void ShowAll()
         {
             var index = 1;
             foreach (var book in _booksInInventory)
@@ -41,7 +41,7 @@
                 var name = book.Name;
                 var author = book.Author;
                 var quantity = book.Quantity;
-                Console.WriteLine($"{index}: {name} by {author}, Quantity: {quantity}");
+                Console.WriteLine($"{index}: {name} by {author}, Quantity: {quantity}\n");
                 index++;
             }
         }
@@ -54,7 +54,7 @@
             {
                 var name = book.Name;
                 var author = book.Author;
-                Console.WriteLine($"{name} by {author}");
+                Console.WriteLine($"{name} by {author}\n");
             }
         }
 
@@ -99,7 +99,26 @@
                 var borrowerName = borrower.BorrowerName;
                 var nameOfBook = borrower.BorrowedBook.Name;
                 var authorOfBook = borrower.BorrowedBook.Author;
-                Console.WriteLine($"{nameOfBook} by {authorOfBook} is borrowed by {borrowerName}");
+                Console.WriteLine($"{nameOfBook} by {authorOfBook} is borrowed by {borrowerName}\n");
+            }
+        }
+
+        public void ReturnBorrowedBook(string borrowerName, string bookName)
+        {
+            foreach (var borrower in _borrowedBooks)
+            {
+                if (borrower.BorrowerName == borrowerName)
+                {
+                    if (borrower.BorrowedBook.Name == bookName)
+                    {
+                        var returnedBook = borrower.BorrowedBook;
+                        returnedBook.IncreaseQuantity();
+                        _borrowedBooks.Remove(borrower);
+                        Console.WriteLine($"{returnedBook.Name} by {returnedBook.Author} was returned by {borrowerName}, at {DateTime.Now}\n");
+                        return;
+                    }
+                    Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
+                }
             }
         }
 

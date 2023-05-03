@@ -21,8 +21,6 @@
         }
         public void DetailedLendInfo()
         {
-            Console.WriteLine("Entering DetailedLendInfoMethod in lender");
-            Console.ReadLine();
             Console.WriteLine($"Du låner nå {BorrowedBook.Name} by {BorrowedBook.Author}. Lånt {DateBorrowed.ToShortDateString()} av {BorrowerName}, Utløps dato er {DueDate.ToShortDateString()}.\n");
         }
 

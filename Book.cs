@@ -13,6 +13,10 @@
             Quantity = quantity;
         }
 
+        public void IncreaseQuantity()
+        {
+            Quantity++;
+        }
         public void DecreaseQuantity()
         {
             Quantity--;
