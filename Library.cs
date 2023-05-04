@@ -86,8 +86,9 @@
                 {
                     if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
                     {
-                       return selectedBookIndex;
+                        return selectedBookIndex;
                     }
+                    Console.WriteLine($"This is not a valid input int.\nTryAgain!");
                 }
             }
         }
