@@ -13,6 +13,11 @@
             Quantity = quantity;
         }
 
+        public void WriteBookInfo(int index)
+        {
+            Console.WriteLine($"{index}: {Name} by {Author}, Quantity: {Quantity}\n");
+        }
+
         public void IncreaseQuantity()
         {
             Quantity++;

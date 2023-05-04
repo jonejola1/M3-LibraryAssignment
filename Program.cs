@@ -70,7 +70,7 @@
             library.ShowAll();
             library.ShowAllLendedBooks();
 
-            library.CheckExpiryDateForLenders();
+            library.GetExpiredDateForLenders();
 
             library.ReturnBorrowedBook("David", "The Time Traveler's Wife");
 

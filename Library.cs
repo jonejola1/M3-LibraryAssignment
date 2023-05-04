@@ -14,22 +14,19 @@
 
         public void AddBook(string nameOfBook, string authorOfBook, int quantityOfBook)
         {
-            if (NoDuplicate(nameOfBook))
-            {
-                var newBookToAdd = new Book(nameOfBook, authorOfBook, quantityOfBook);
-                _booksInInventory.Add(newBookToAdd);
-                Console.WriteLine($"Added the book {nameOfBook} by {authorOfBook}\n");
-            }
-            
+            if (IsDuplicate(nameOfBook)) return;
+            var newBookToAdd = new Book(nameOfBook, authorOfBook, quantityOfBook);
+            _booksInInventory.Add(newBookToAdd);
+            Console.WriteLine($"Added the book {nameOfBook} by {authorOfBook}\n");
+
         }
 
-        private bool NoDuplicate(string nameOfbook)
+        private bool IsDuplicate(string nameOfBook)
         {
             foreach (var book in _booksInInventory)
             {
-                if (book.Name == nameOfbook) return true;
+                if (book.Name == nameOfBook) return true;
             }
-
             return false;
         }
 
@@ -38,19 +35,14 @@
             var index = 1;
             foreach (var book in _booksInInventory)
             {
-                var name = book.Name;
-                var author = book.Author;
-                var quantity = book.Quantity;
-                Console.WriteLine($"{index}: {name} by {author}, Quantity: {quantity}\n");
+                book.WriteBookInfo(index);
                 index++;
             }
         }
 
         public void ShowRecentBooks()
         {
-            var recentBooks = _booksInInventory.GetRange(Math.Max(0, _booksInInventory.Count - 5),
-                Math.Min(5, _booksInInventory.Count));
-            foreach (var book in recentBooks)
+            foreach (var book in _booksInInventory.TakeLast(5))
             {
                 var name = book.Name;
                 var author = book.Author;
@@ -96,10 +88,7 @@
         {
             foreach (var borrower in _borrowedBooks)
             {
-                var borrowerName = borrower.BorrowerName;
-                var nameOfBook = borrower.BorrowedBook.Name;
-                var authorOfBook = borrower.BorrowedBook.Author;
-                Console.WriteLine($"{nameOfBook} by {authorOfBook} is borrowed by {borrowerName}\n");
+                borrower.CheckBorrowerInfo();
             }
         }
 
@@ -107,29 +96,23 @@
         {
             foreach (var borrower in _borrowedBooks)
             {
-                if (borrower.BorrowerName == borrowerName)
+                if (borrower.BorrowerName == borrowerName && borrower.BorrowedBook.Name == bookName)
                 {
-                    if (borrower.BorrowedBook.Name == bookName)
-                    {
-                        var returnedBook = borrower.BorrowedBook;
-                        returnedBook.IncreaseQuantity();
-                        _borrowedBooks.Remove(borrower);
-                        Console.WriteLine($"{returnedBook.Name} by {returnedBook.Author} was returned by {borrowerName}, at {DateTime.Now}\n");
-                        break;
-                    }
-                    Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
+                    var returnedBook = borrower.BorrowedBook;
+                    returnedBook.IncreaseQuantity();
+                    _borrowedBooks.Remove(borrower);
+                    Console.WriteLine($"{returnedBook.Name} by {returnedBook.Author} was returned by {borrowerName}, at {DateTime.Now}\n");
+                    break; 
                 }
             }
+            Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
         }
 
-        public void CheckExpiryDateForLenders()
+        public void GetExpiredDateForLenders()
         {
             foreach (var borrower in _borrowedBooks)
             {
-                if (borrower.IsExpired())
-                {
-                    Console.WriteLine($"{borrower.BorrowerName} har ikke levert boken på fristen og et gebyr vil bli sent!");
-                }
+                borrower.CheckIfDueDateHasExpired();
             }
         }
     }
