@@ -35,7 +35,7 @@
             var index = 1;
             foreach (var book in _booksInInventory)
             {
-                book.WriteBookInfo(index);
+                book.WriteBookInfo(index-1);
                 index++;
             }
         }
@@ -56,10 +56,9 @@
             ShowAll();
 
 
-            int selectedBookIndex = SelectBookToLend();
+            Book selectedBook = SelectBookToLend();
 
 
-            var selectedBook = _booksInInventory[selectedBookIndex - 1];
             if (selectedBook.GetQuantity() == 0 ) return;
             var lender = new Borrower(aBorrowerName, selectedBook, DateTime.Today);
             _borrowedBooks.Add(lender);
@@ -76,31 +75,42 @@
             }
         }
 
-        private int SelectBookToLend()
+        private Book SelectBookToLend()
         {
             while (true)
             {
-                int selectedBookIndex;
                 var input = Console.ReadLine();
-                if (int.TryParse(input, out selectedBookIndex))
+                if (int.TryParse(input, out var selectedBookIndex))
                 {
-                    if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
+                    if (IsValidBookIndex(selectedBookIndex))
                     {
-                        return selectedBookIndex;
+                        return GetBookToLend(selectedBookIndex);
                     }
                 }
             }
+        }
+
+        private bool IsValidBookIndex(int selectedBookIndex)
+        {
+            if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
+            {
+                return true;
+            }
+            return false;
+        }
+        private Book GetBookToLend(int bookIndex)
+        {
+            var selectedBookToLend = _booksInInventory[bookIndex];
+            return selectedBookToLend;
         }
 
         public void ReturnBorrowedBook(string borrowerName, string bookName)
         {
             foreach (var borrower in _borrowedBooks)
             {
-                if (borrower.CheckBorrowerBookMatch(borrowerName, bookName))
-                {
-                    RemoveBookBorrower(borrower);
-                    return;
-                }
+                if (!borrower.CheckBorrowerBookMatch(borrowerName, bookName)) continue;
+                RemoveBookBorrower(borrower);
+                return;
             }
             Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
         }

@@ -45,7 +45,7 @@
         {
             if (IsExpired())
             {
-                Console.WriteLine($"{_borrowerName} har ikke levert boken på fristen og et gebyr vil bli sent!");
+                Console.WriteLine($"{_borrowerName} har ikke levert boken på fristen: {_dueDate.ToShortDateString()} og et gebyr vil bli sent!");
             }
         }
 

@@ -68,11 +68,11 @@
             library.ShowAllLendedBooks();
             library.LendBook("Per");
             library.ShowAll();
-            library.ShowAllLendedBooks();
 
             library.GetExpiredDateForLenders();
 
             library.ReturnBorrowedBook("John", "Brave New World");
+            library.ReturnBorrowedBook("Per", "Test To fail");
 
             library.ShowAllLendedBooks();
 
