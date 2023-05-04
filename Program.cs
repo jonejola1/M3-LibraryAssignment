@@ -49,8 +49,8 @@
             List<Borrower> borrowedBooks = new List<Borrower>
             {
                 new Borrower("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today),
-                new Borrower("John", books[3], DateTime.Today.AddDays(-7)),
                 new Borrower("Sarah", books[5], DateTime.Today.AddDays(-14)),
+                new Borrower("John", books[3], DateTime.Today.AddDays(-7)),
                 new Borrower("Michael", books[11], DateTime.Today.AddDays(-10)),
                 new Borrower("Emily", books[21], DateTime.Today.AddDays(-20)),
                 new Borrower("David", books[28], DateTime.Today.AddDays(-4)),
@@ -72,7 +72,7 @@
 
             library.GetExpiredDateForLenders();
 
-            library.ReturnBorrowedBook("David", "The Time Traveler's Wife");
+            library.ReturnBorrowedBook("John", "Brave New World");
 
             library.ShowAllLendedBooks();
 

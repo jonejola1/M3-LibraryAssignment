@@ -25,7 +25,7 @@
         {
             foreach (var book in _booksInInventory)
             {
-                if (book.Name == nameOfBook) return true;
+                if (book.GetName() == nameOfBook) return true;
             }
             return false;
         }
@@ -44,8 +44,8 @@
         {
             foreach (var book in _booksInInventory.TakeLast(5))
             {
-                var name = book.Name;
-                var author = book.Author;
+                var name = book.GetName();
+                var author = book.GetName();
                 Console.WriteLine($"{name} by {author}\n");
             }
         }
@@ -60,12 +60,20 @@
 
 
             var selectedBook = _booksInInventory[selectedBookIndex - 1];
-            if (selectedBook.Quantity == 0 ) return;
+            if (selectedBook.GetQuantity() == 0 ) return;
             var lender = new Borrower(aBorrowerName, selectedBook, DateTime.Today);
             _borrowedBooks.Add(lender);
             
             selectedBook.DecreaseQuantity();
             lender.DetailedLendInfo();
+        }
+
+        public void ShowAllLendedBooks()
+        {
+            foreach (var borrower in _borrowedBooks)
+            {
+                borrower.CheckBorrowerInfo();
+            }
         }
 
         private int SelectBookToLend()
@@ -78,17 +86,9 @@
                 {
                     if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
                     {
-                       return selectedBookIndex;
+                        return selectedBookIndex;
                     }
                 }
-            }
-        }
-
-        public void ShowAllLendedBooks()
-        {
-            foreach (var borrower in _borrowedBooks)
-            {
-                borrower.CheckBorrowerInfo();
             }
         }
 
@@ -96,16 +96,22 @@
         {
             foreach (var borrower in _borrowedBooks)
             {
-                if (borrower.BorrowerName == borrowerName && borrower.BorrowedBook.Name == bookName)
+                if (borrower.CheckBorrowerBookMatch(borrowerName, bookName))
                 {
-                    var returnedBook = borrower.BorrowedBook;
-                    returnedBook.IncreaseQuantity();
-                    _borrowedBooks.Remove(borrower);
-                    Console.WriteLine($"{returnedBook.Name} by {returnedBook.Author} was returned by {borrowerName}, at {DateTime.Now}\n");
-                    break; 
+                    RemoveBookBorrower(borrower);
+                    return;
                 }
             }
             Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
+        }
+
+        public void RemoveBookBorrower(Borrower borrower)
+        {
+            if (_borrowedBooks.Contains(borrower))
+            {
+                borrower.ReturnBookToLibrary();
+                _borrowedBooks.Remove(borrower);
+            }
         }
 
         public void GetExpiredDateForLenders()

@@ -2,29 +2,44 @@
 {
     internal class Book
     {
-        public string Name { get; private set; }
-        public string Author { get; private set; }
-        public int Quantity { get; private set; }
+        private string _name;
+        private string _author;
+        private int _quantity;
 
         public Book(string name, string author, int quantity)
         {
-            Name = name;
-            Author = author;
-            Quantity = quantity;
+            _name = name;
+            _author = author;
+            _quantity = quantity;
         }
 
-        public void WriteBookInfo(int index)
+        public string GetName()
         {
-            Console.WriteLine($"{index}: {Name} by {Author}, Quantity: {Quantity}\n");
+            return _name;
+        }
+
+        public string GetAuthor()
+        {
+            return _author;
+        }
+
+        public int GetQuantity()
+        {
+            return _quantity;
+        }
+
+        public void WriteBookInfo(int index) 
+        {
+            Console.WriteLine($"{index}: {_name} by {_author}, _quantity: {_quantity}\n");
         }
 
         public void IncreaseQuantity()
         {
-            Quantity++;
+            _quantity++;
         }
         public void DecreaseQuantity()
         {
-            Quantity--;
+            _quantity--;
         }
     }
 }
