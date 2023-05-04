@@ -4,7 +4,7 @@
     {
         static void Main()
         {
-            List<Book> books = new List<Book>
+            var books = new List<Book>
             {
                 new Book("To Kill a Mockingbird", "Harper Lee", 10),
                 new Book("1984", "George Orwell", 8),
@@ -46,7 +46,7 @@
                 new Book("Les Miserables", "Victor Hugo", 13),
                 new Book("The Count of Monte Cristo", "Alexandre Dumas", 8),
             };
-            List<Borrower> borrowedBooks = new List<Borrower>
+            var borrowedBooks = new List<Borrower>
             {
                 new Borrower("Pål", new Book("Spice & Wolf: The Coin of the Sun I, Vol 15", "Isuna Hasekura", 1),  DateTime.Today),
                 new Borrower("Sarah", books[5], DateTime.Today.AddDays(-14)),

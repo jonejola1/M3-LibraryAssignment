@@ -92,11 +92,8 @@
 
         private bool IsValidBookIndex(int selectedBookIndex)
         {
-            if (selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count)
-            {
-                return true;
-            }
-            return false;
+            return selectedBookIndex >= 1 && selectedBookIndex <= _booksInInventory.Count;
+
         }
         private Book GetBookToLend(int bookIndex)
         {
@@ -115,7 +112,7 @@
             Console.WriteLine($"{bookName} borrowed by {borrowerName} was not found.\n");
         }
 
-        public void RemoveBookBorrower(Borrower borrower)
+        private void RemoveBookBorrower(Borrower borrower)
         {
             if (_borrowedBooks.Contains(borrower))
             {

@@ -15,16 +15,6 @@
             ConvertToDueDate();
         }
 
-        public string GetBorrowerName()
-        {
-            return _borrowerName;
-        }
-
-        public Book GetBorrowedBook()
-        {
-            return _borrowedBook;
-        }
-
         private void ConvertToDueDate()
         {
             _dueDate = _dateBorrowed.AddDays(14);
@@ -49,18 +39,14 @@
             }
         }
 
-        public bool IsExpired()
+        private bool IsExpired()
         {
             return DateTime.Now > _dueDate;
         }
 
         public bool CheckBorrowerBookMatch(string borrowerName, string bookName)
         {
-            if (_borrowerName == borrowerName && _borrowedBook.GetName() == bookName)
-            {
-                return true;
-            }
-            return false;
+            return _borrowerName == borrowerName && _borrowedBook.GetName() == bookName;
         }
 
         public void ReturnBookToLibrary()
